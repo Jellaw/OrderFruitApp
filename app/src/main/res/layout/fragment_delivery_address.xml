@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:attribute="http://schemas.android.com/apk/res-auto">
+    <data>
+    </data>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp"
+            android:background="@color/white_background">
+
+
+            <EditText
+                android:id="@+id/editTextFullName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:hint="Full Name"
+                android:background="@drawable/background_item_checkout"
+                android:paddingRight="30dp"
+                android:paddingTop="20dp"
+                android:paddingLeft="30dp"
+                android:paddingBottom="20dp"
+                android:textColorHint="@color/background_splash"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/editTextStreetAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:layout_marginTop="20dp"
+                android:paddingRight="30dp"
+                android:paddingTop="20dp"
+                android:paddingLeft="30dp"
+                android:paddingBottom="20dp"
+                android:background="@drawable/background_item_checkout"
+                android:hint="Street Address"
+                android:textColorHint="@color/background_splash"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextFullName" />
+
+            <EditText
+                android:id="@+id/editTextCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_marginTop="20dp"
+                android:inputType="textPersonName"
+                android:hint="Town/City"
+                android:textColorHint="@color/background_splash"
+                android:background="@drawable/background_item_checkout"
+                android:paddingRight="30dp"
+                android:paddingTop="20dp"
+                android:paddingLeft="30dp"
+                android:paddingBottom="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextStreetAddress" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

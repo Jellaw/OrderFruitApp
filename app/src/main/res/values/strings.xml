@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Fruit-Application</string>
+    <string name="welcome1">Best Fruit Shop</string>
+    <string name="welcome1des">Quickly search and add healthy fruit to your cart</string>
+    <string name="welcome2">Organic Fruit</string>
+    <string name="welcome2des">Quickly search and add organic healthy fruit to your cart</string>
+    <string name="welcome3">Healthy and Fresh</string>
+    <string name="welcome3des">Quickly search and add Healthy and Fresh fruit to your cart</string>
+    <array name="spinner">
+        <item>Popular</item>
+        <item>VIP</item>
+    </array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
