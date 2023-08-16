@@ -15,6 +15,7 @@ public class SigninActivity extends AppCompatActivity {
     TextView tvForgetPw , tvCreatAcc;
     Button btnSignin ;
     EditText edtEmailSignin, edtPwSigin;
+    String email , password;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +27,15 @@ public class SigninActivity extends AppCompatActivity {
         edtEmailSignin = findViewById(R.id.edtEmailSiginin);
         edtPwSigin = findViewById(R.id.edtPasswordSignin);
 
+        email = edtEmailSignin.getText().toString().trim();
+        password = edtPwSigin.getText().toString().trim();
         btnSignin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        tvCreatAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SigninActivity.this, CreatAccountActivity.class);

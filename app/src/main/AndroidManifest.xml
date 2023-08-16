@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FruitApplication.NoActionBar">
         <activity
+            android:name=".WelcomeActivity"
+            android:exported="false" />
+        <activity
             android:name=".CreatAccountActivity"
             android:exported="false" />
         <activity
@@ -30,7 +33,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="false"
-            tools:ignore="Instantiatable"></activity>
+            tools:ignore="Instantiatable" />
     </application>
 
 </manifest>

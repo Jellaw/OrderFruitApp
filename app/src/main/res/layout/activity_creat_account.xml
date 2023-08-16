@@ -3,9 +3,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activities.CreatAccountActivity">
+    >
     <data >
 
     </data>
@@ -13,7 +11,30 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="#f3f3f3"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        tools:context=".activities.CreatAccountActivity">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.85" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/background_login"
+        android:elevation="5dp"
+        android:translationZ="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <TextView
             android:id="@+id/textView"
@@ -32,25 +53,6 @@
 
 
         <EditText
-            android:id="@+id/edtEmailCreatAcc"
-            android:layout_width="280dp"
-            android:layout_height="60dp"
-            android:background="@drawable/background_edittext"
-            android:drawableStart="@drawable/ic_baseline_mail_outline_24"
-            android:drawablePadding="15dp"
-            android:ems="10"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:layout_constraintVertical_bias="0.301" />
-
-        <EditText
             android:id="@+id/edtFullnameCreatAcc"
             android:layout_width="280dp"
             android:layout_height="60dp"
@@ -64,10 +66,27 @@
             android:textColorHint="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:layout_constraintVertical_bias="0.16" />
+            app:layout_constraintVertical_bias="0.264" />
+
+        <EditText
+            android:id="@+id/edtEmailCreatAcc"
+            android:layout_width="280dp"
+            android:layout_height="60dp"
+            android:background="@drawable/background_edittext"
+            android:drawableStart="@drawable/ic_baseline_mail_outline_24"
+            android:drawablePadding="15dp"
+            android:ems="10"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintVertical_bias="0.406" />
 
         <EditText
             android:id="@+id/edtPasswordCreatAcc"
@@ -83,10 +102,9 @@
             android:textColorHint="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:layout_constraintVertical_bias="0.441" />
+            app:layout_constraintVertical_bias="0.546" />
 
         <Button
             android:id="@+id/btnCreateAcc"
@@ -101,25 +119,9 @@
             app:iconSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.492"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edtPasswordCreatAcc"
-            app:layout_constraintVertical_bias="0.36" />
-
-        <TextView
-            android:id="@+id/tvBacktoSignin"
-            android:layout_width="114dp"
-            android:layout_height="34dp"
-            android:text="SIGN IN"
-            android:textAlignment="center"
-            android:textAllCaps="true"
-            android:textColor="#908d88"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnCreateAcc"
-            app:layout_constraintVertical_bias="0.339" />
+            app:layout_constraintVertical_bias="0.613" />
 
         <Button
             android:id="@+id/btnBackSignin"
@@ -135,6 +137,23 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tvBacktoSignin"
+            android:layout_width="114dp"
+            android:layout_height="34dp"
+            android:text="SIGN IN"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="#908d88"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+            app:layout_constraintVertical_bias="0.426" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
