@@ -13,10 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FruitApplication.NoActionBar">
         <activity
-            android:name=".WelcomeActivity"
+            android:name=".activities.WelcomeActivity"
             android:exported="false" />
         <activity
-            android:name=".CreatAccountActivity"
+            android:name=".activities.CreatAccountActivity"
             android:exported="false" />
         <activity
             android:name=".activities.SigninActivity"

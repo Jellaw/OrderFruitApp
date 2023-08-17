@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
-    <data >
+    xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,7 +12,8 @@
         android:background="#f3f3f3"
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
-        tools:context=".activities.WelcomeActivity">
+        tools:context=".activity.LoginActivity">
+
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"
@@ -36,37 +35,45 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0">
 
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
-            <Button
-                android:id="@+id/btnBackSignin"
-                android:layout_width="66dp"
-                android:layout_height="57dp"
-                android:backgroundTint="@color/white"
-                app:icon="@drawable/ic_baseline_arrow_back_24"
-                app:iconTint="@color/background_splash"
-                app:layout_constraintBottom_toTopOf="@+id/textView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+            <LinearLayout
+                android:id="@+id/layoutDots"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="@+id/view_pager"
+                ></LinearLayout>
 
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:alpha=".5"
+                android:background="@android:color/white"
+                app:layout_constraintBottom_toTopOf="@+id/layoutDots"
+                />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            android:id="@+id/tvWelcome"
-            android:layout_width="164dp"
-            android:layout_height="24dp"
+            android:id="@+id/skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Skip"
-            android:textAlignment="center"
             android:textAllCaps="true"
             android:textColor="#908d88"
             android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-            app:layout_constraintVertical_bias="0.458" />
+            app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

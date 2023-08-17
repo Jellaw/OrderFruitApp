@@ -4,8 +4,9 @@ plugins {
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    dataBinding {
-        enabled = true
+    buildFeatures {
+
+        dataBinding true
     }
     compileSdkVersion 33
     buildToolsVersion "30.0.3"
