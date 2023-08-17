@@ -116,6 +116,20 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvForgetPw"
                 app:layout_constraintVertical_bias="0.794" />
 
+            <TextView
+                android:id="@+id/tvError"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/btnSignin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvForgetPw"
+                app:layout_constraintVertical_bias="0.582" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -21,7 +21,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.fruit_application.Class.PrefManager;
-import com.example.fruit_application.MainActivity;
 import com.example.fruit_application.R;
 import com.example.fruit_application.databinding.ActivityWelcomeBinding;
 

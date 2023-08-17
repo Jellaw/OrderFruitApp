@@ -12,8 +12,10 @@ import android.widget.TextView;
 
 import com.example.fruit_application.R;
 
+import java.util.regex.Pattern;
+
 public class SigninActivity extends AppCompatActivity {
-    TextView tvForgetPw , tvCreatAcc;
+    TextView tvForgetPw , tvCreatAcc ,tvError;
     Button btnSignin ;
     EditText edtEmailSignin, edtPwSigin;
     String email , password;
@@ -27,22 +29,31 @@ public class SigninActivity extends AppCompatActivity {
         btnSignin = findViewById(R.id.btnSignin);
         edtEmailSignin = findViewById(R.id.edtEmailSiginin);
         edtPwSigin = findViewById(R.id.edtPasswordSignin);
+        tvError = findViewById(R.id.tvError);
 
         btnSignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 email = edtEmailSignin.getText().toString().trim();
                 password = edtPwSigin.getText().toString().trim();
-
+                String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+                String passwordPattern = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{4,}$";
 
 
                 if (email.isEmpty() || password.isEmpty()){
-                    edtEmailSignin.setError("Vui lòng nhập đủ thông tin");
-                    edtPwSigin.setError("Vui lòng nhập đủ thông tin");
+                    tvError.setText("Vui lòng đủ thông tin!");
                 }else {
+                    if (email.matches(emailPattern) ){
+                        if (password.length() > 8 && password.matches(passwordPattern)){
+                            Intent intent = new Intent(SigninActivity.this, WelcomeActivity.class);
+                            startActivity(intent);
+                        }else {
+                            tvError.setText("Mật khẩu nhập sai định dang!");
+                        }
+                    }else {
+                        tvError.setText("Email nhập sai định dạng!");
+                    }
 
-                    Intent intent = new Intent(SigninActivity.this, WelcomeActivity.class);
-                    startActivity(intent);
                 }
             }
         });
@@ -54,4 +65,5 @@ public class SigninActivity extends AppCompatActivity {
             }
         });
     }
+
 }

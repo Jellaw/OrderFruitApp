@@ -68,7 +68,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:layout_constraintVertical_bias="0.264" />
+            app:layout_constraintVertical_bias="0.186" />
 
         <EditText
             android:id="@+id/edtEmailCreatAcc"
@@ -86,7 +86,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:layout_constraintVertical_bias="0.406" />
+            app:layout_constraintVertical_bias="0.328" />
 
         <EditText
             android:id="@+id/edtPasswordCreatAcc"
@@ -104,7 +104,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:layout_constraintVertical_bias="0.546" />
+            app:layout_constraintVertical_bias="0.468" />
 
         <Button
             android:id="@+id/btnCreateAcc"
@@ -121,7 +121,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edtPasswordCreatAcc"
-            app:layout_constraintVertical_bias="0.613" />
+            app:layout_constraintVertical_bias="0.697" />
 
         <Button
             android:id="@+id/btnBackWc"
@@ -136,6 +136,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
+        <TextView
+            android:id="@+id/tvErrorCA"
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/btnCreateAcc"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edtPasswordCreatAcc"
+            app:layout_constraintVertical_bias="0.582" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

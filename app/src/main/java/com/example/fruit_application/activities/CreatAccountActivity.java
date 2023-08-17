@@ -15,7 +15,7 @@ import com.example.fruit_application.R;
 public class CreatAccountActivity extends AppCompatActivity {
     Button btnCreatAcc , btnBacktoSigin;
     EditText edtFullname , edtEmailCA , edtPwCA;
-    TextView tvBackSignin;
+    TextView tvBackSignin, tvErrorCA;
     String emailCA , fullnamCA , passwordCA;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +28,7 @@ public class CreatAccountActivity extends AppCompatActivity {
         edtFullname = findViewById(R.id.edtFullnameCreatAcc);
         edtPwCA = findViewById(R.id.edtPasswordCreatAcc);
         tvBackSignin = findViewById(R.id.tvBacktoSignin);
+        tvErrorCA = findViewById(R.id.tvErrorCA);
 
 
         btnCreatAcc.setOnClickListener(new View.OnClickListener() {
@@ -37,14 +38,23 @@ public class CreatAccountActivity extends AppCompatActivity {
                 fullnamCA = edtFullname.getText().toString().trim();
                 passwordCA = edtPwCA.getText().toString().trim();
 
+                String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+                String passwordPattern = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{4,}$";
+
                 if (emailCA.isEmpty() || fullnamCA.isEmpty() || passwordCA.isEmpty()){
-                    edtEmailCA.setError("Vui lòng nhập đủ thông tin");
-                    edtFullname.setError("Vui lòng nhập đủ thông tin");
-                    edtPwCA.setError("Vui lòng nhập đủ thông tin");
+                    tvErrorCA.setText("Vui lòng nhập đủ thông tin!");
                 }else {
 
-                    Intent intent = new Intent(CreatAccountActivity.this, WelcomeActivity.class);
-                    startActivity(intent);
+                    if (emailCA.matches(emailPattern) ){
+                        if (passwordCA.length() > 8 && passwordCA.matches(passwordPattern)){
+                            Intent intent = new Intent(CreatAccountActivity.this, WelcomeActivity.class);
+                            startActivity(intent);
+                        }else {
+                            tvErrorCA.setText("Mật khẩu nhập sai định dang!");
+                        }
+                    }else {
+                        tvErrorCA.setText("Email nhập sai định dạng!");
+                    }
                 }
             }
         });
