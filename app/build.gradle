@@ -58,6 +58,8 @@ dependencies {
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
     implementation 'com.github.developer-shivam:Crescento:1.2.1'
 
+    implementation "androidx.fragment:fragment:1.2.5"
+
     apply plugin: 'realm-android'
 
     realm {

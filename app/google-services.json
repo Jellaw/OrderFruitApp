@@ -1,41 +1,33 @@
 {
   "project_info": {
-    "project_number": "176636779162",
-    "project_id": "fruit-app-mvvm",
-    "storage_bucket": "fruit-app-mvvm.appspot.com"
+    "project_number": "431966763058",
+    "project_id": "fruit-app-73d8f",
+    "storage_bucket": "fruit-app-73d8f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:176636779162:android:7ff06c7a2dc1fbec245d23",
+        "mobilesdk_app_id": "1:431966763058:android:38fab4a222d94fb9da642b",
         "android_client_info": {
           "package_name": "com.example.fruit_application"
         }
       },
       "oauth_client": [
         {
-          "client_id": "176636779162-qfkr3o5gp72lqq8c6f5ootm2mo0in7o6.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.fruit_application",
-            "certificate_hash": "0b2b440d04a0fea4161cea9bbf8f7c65a08bf007"
-          }
-        },
-        {
-          "client_id": "176636779162-1m6pedq9775njkvnj7hk8363dn3jfdbo.apps.googleusercontent.com",
+          "client_id": "431966763058-ll79v6dp5hc4hoovsb4lo260jnjij2po.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCXZ7Cvln3CKkpaq2yD5QLRw14ve31yVQg"
+          "current_key": "AIzaSyBZRKb5PVnXHIIunOEPMtXbtvYCOWeTdcA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "176636779162-1m6pedq9775njkvnj7hk8363dn3jfdbo.apps.googleusercontent.com",
+              "client_id": "431966763058-ll79v6dp5hc4hoovsb4lo260jnjij2po.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
