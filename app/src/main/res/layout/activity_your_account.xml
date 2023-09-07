@@ -147,7 +147,7 @@
                             android:id="@+id/infoStreet"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="350 Kim Giang - Đại Kim - Hoàng Mai - HN" />
+                            android:text="Nam Từ Liêm , HN" />
                     </LinearLayout>
 
                     <ImageView
@@ -206,7 +206,7 @@
                             android:id="@+id/infoName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="John Doe" />
+                            android:text="Phát" />
                     </LinearLayout>
 
                     <ImageView
@@ -256,7 +256,7 @@
                             android:id="@+id/infoEmail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="123duy99@gmail.com" />
+                            android:text="ngphatnn@gmail.com" />
                     </LinearLayout>
 
                     <ImageView
@@ -307,7 +307,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:inputType="textPassword"
-                            android:text="123duy99@gmail.com" />
+                            android:text="fjkdfkjfgf" />
                     </LinearLayout>
 
                     <ImageView

@@ -18,7 +18,7 @@
         android:translationZ="6dp">
 
         <ImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/imageViewFruit_item"
             android:layout_width="115dp"
             android:layout_height="115dp"
             android:src="@drawable/durian"
@@ -36,7 +36,7 @@
             android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+            app:layout_constraintTop_toBottomOf="@+id/imageViewFruit_item" />
 
         <TextView
             android:id="@+id/fruitPrice"

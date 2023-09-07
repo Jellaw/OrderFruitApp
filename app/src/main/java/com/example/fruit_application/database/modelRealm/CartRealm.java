@@ -1,6 +1,10 @@
-package com.example.fruit_application.Model;
+package com.example.fruit_application.database.modelRealm;
 
-public class Cart {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class CartRealm extends RealmObject {
+    @PrimaryKey
     private int idCart;
     private String idUs;
     private int idFruit;
@@ -8,16 +12,6 @@ public class Cart {
     private int imgFruit;
     private int quanlity;
     private String priceFruit;
-
-    public Cart(int idCart, String idUs, int idFruit, int imgFruit, String namefruit, int quanlity, String priceFruit) {
-        this.idCart = idCart;
-        this.idUs = idUs;
-        this.idFruit = idFruit;
-        this.namefruit = namefruit;
-        this.imgFruit = imgFruit;
-        this.quanlity = quanlity;
-        this.priceFruit = priceFruit;
-    }
 
     public int getIdCart() {
         return idCart;

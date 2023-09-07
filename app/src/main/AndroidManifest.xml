@@ -13,6 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FruitApplication.NoActionBar">
         <activity
+            android:name=".ShowMoreFruitActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.DetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.YourOrderActivity"
             android:exported="false" />
         <activity

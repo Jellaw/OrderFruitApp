@@ -1,20 +1,23 @@
 package com.example.fruit_application.Model;
 
 public class Fruit {
-    private String idFruit;
+    private int idFruit;
     private String name;
-    private int weight;
-    private int price;
+    private String price;
     private int igm;
 
-    public Fruit() {
+    public Fruit(int idFruit, String name, String price, int igm) {
+        this.idFruit = idFruit;
+        this.name = name;
+        this.price = price;
+        this.igm = igm;
     }
 
-    public String getIdFruit() {
+    public int getIdFruit() {
         return idFruit;
     }
 
-    public void setIdFruit(String idFruit) {
+    public void setIdFruit(int idFruit) {
         this.idFruit = idFruit;
     }
 
@@ -26,19 +29,11 @@ public class Fruit {
         this.name = name;
     }
 
-    public int getWeight() {
-        return weight;
-    }
-
-    public void setWeight(int weight) {
-        this.weight = weight;
-    }
-
-    public int getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 

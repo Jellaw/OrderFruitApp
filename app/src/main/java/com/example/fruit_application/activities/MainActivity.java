@@ -13,13 +13,17 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.fruit_application.R;
 import com.example.fruit_application.databinding.ActivityMainBinding;
+import com.example.fruit_application.fragments.AddCartFragment;
+import com.example.fruit_application.fragments.HomeFragment;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding mainBinding;
     NavController navController;
+    public String idUser;
     public FragmentManager manager;
+    AddCartFragment addCartFragment;
 
-    private boolean checkFloatingButton = false;
+    boolean checkFloatingButton = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +33,16 @@ public class MainActivity extends AppCompatActivity {
         navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(mainBinding.bottomNavigationView, navController);
         manager = getSupportFragmentManager();
+        Intent intent = getIntent();
+        idUser = intent.getStringExtra("idUser");
+        mainBinding.fab.setOnClickListener(view -> {
+            if(!checkFloatingButton){
+                addCartFragment = new AddCartFragment();
+                checkFloatingButton = true;
+            }else {
 
+            }
+        });
 
 
     }
@@ -40,4 +53,11 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+
+    public void goToMoreFruitActivity(int i) {
+        Intent intent = new Intent(MainActivity.this,ShowMoreFruitActivity.class);
+        intent.putExtra("type", i);
+        intent.putExtra("idUser", idUser);
+        startActivity(intent);
+    }
 }
