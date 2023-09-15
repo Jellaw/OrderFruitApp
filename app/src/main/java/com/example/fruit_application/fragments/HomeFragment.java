@@ -32,7 +32,7 @@ public class HomeFragment extends Fragment {
     private static final String p2 = "param2";
 
     private String mparam1;
-    private String mparem2;
+    private String mparam2;
     public HomeFragment() {
     }
     public static HomeFragment newInstance(String param1 , String param2){
@@ -48,7 +48,7 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null){
             mparam1 = getArguments().getString(p1);
-            mparem2  = getArguments().getString(p2);
+            mparam2  = getArguments().getString(p2);
 
         }
     }
@@ -69,8 +69,8 @@ public class HomeFragment extends Fragment {
         list.add(new Fruit(0,"Durian", "2.9", R.drawable.durian));
         list.add(new Fruit(1,"Apple", "2.9", R.drawable.apple));
         list.add(new Fruit(2,"Papaya", "1.9", R.drawable.papaya));
-        list.add(new Fruit(0,"Watermelon", "1.9", R.drawable.watermelon));
-        list.add(new Fruit(0,"Tomato", "2.5", R.drawable.tomato));
+        list.add(new Fruit(0,"Mango", "1.9", R.drawable.mango));
+        list.add(new Fruit(0,"Strawberry", "2.5", R.drawable.straw));
         list.add(new Fruit(0,"Peach", "2.9", R.drawable.peach));
         list.add(new Fruit(0,"Kiwi", "2.0", R.drawable.kiwi_xanh_500x500));
         initRecyclerViewOurStore();
@@ -79,7 +79,7 @@ public class HomeFragment extends Fragment {
         binding.ourStoreMore.setOnClickListener(view1 -> {
             showMoreFruit(1);
         });
-        binding.ourStoreMore.setOnClickListener(view1 -> {
+        binding.ourStoreMore.setOnClickListener(view2 -> {
             showMoreFruit(2);
         });
     }

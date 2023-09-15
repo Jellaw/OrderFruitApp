@@ -14,7 +14,6 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.fruit_application.R;
 import com.example.fruit_application.databinding.ActivityMainBinding;
 import com.example.fruit_application.fragments.AddCartFragment;
-import com.example.fruit_application.fragments.HomeFragment;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding mainBinding;
@@ -22,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     public String idUser;
     public FragmentManager manager;
     AddCartFragment addCartFragment;
+
 
     boolean checkFloatingButton = false;
     @Override
@@ -36,16 +36,31 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         idUser = intent.getStringExtra("idUser");
         mainBinding.fab.setOnClickListener(view -> {
-            if(!checkFloatingButton){
-                addCartFragment = new AddCartFragment();
-                checkFloatingButton = true;
-            }else {
-
+            if (!checkFloatingButton){
+                initFloatingButtonFragment();
+                checkFloatingButton=true;
+            } else {
+                FragmentTransaction transaction= manager.beginTransaction();
+                transaction.remove(addCartFragment);
+                transaction.commit();
+                checkFloatingButton=false;
             }
         });
 
 
     }
+
+    private void initFloatingButtonFragment() {
+        addCartFragment = new AddCartFragment();
+        FragmentTransaction transaction= manager.beginTransaction();
+        if(addCartFragment == null){
+            addCartFragment = new AddCartFragment();
+        }
+        transaction.add(R.id.nav_host_fragment, addCartFragment, "Floating");
+        transaction.addToBackStack("Floating");
+        transaction.commit();
+    }
+
 
     public void backToLoginActivity(){
         Intent intent = new Intent(MainActivity.this, SigninActivity.class);

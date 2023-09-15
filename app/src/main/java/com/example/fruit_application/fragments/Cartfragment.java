@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.fruit_application.EditQuantityDialog;
+import com.example.fruit_application.activities.EditQuantityDialog;
 import com.example.fruit_application.Model.Cart;
 import com.example.fruit_application.R;
 import com.example.fruit_application.activities.MainActivity;
@@ -209,7 +209,7 @@ public class Cartfragment extends Fragment {
             checkOutFragment = new CheckOutFragment();
         }
         checkOutFragment.idCart = idCart;
-       // transactionEdu.add(R.id.nav_host_fragment, checkOutFragment, "Checkout status");
+        transactionEdu.add(R.id.nav_host_fragment, checkOutFragment, "Checkout status");
         transactionEdu.addToBackStack("Checkout");
         transactionEdu.commit();
     }

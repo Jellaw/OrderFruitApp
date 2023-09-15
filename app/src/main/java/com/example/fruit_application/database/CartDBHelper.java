@@ -40,10 +40,9 @@ public class CartDBHelper {
                     cartRealm.setIdUs(idUser);
                     cartRealm.setIdFruit(fruit.getIdFruit());
                     cartRealm.setNamefruit(fruit.getName());
-                    cartRealm.setImgFruit(fruit.getIgm());
                     cartRealm.setQuanlity(quantity);
                     cartRealm.setPriceFruit(fruit.getPrice());
-                    realm.insert(cartRealm);
+                    realm.insertOrUpdate(cartRealm);
                     callBack.executeService(true);
                 }catch (Exception e){
                     callBack.executeService(false);

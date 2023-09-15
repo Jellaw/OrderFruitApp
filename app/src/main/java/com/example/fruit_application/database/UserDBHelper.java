@@ -1,7 +1,5 @@
 package com.example.fruit_application.database;
 
-import com.example.fruit_application.Model.Fruit;
-import com.example.fruit_application.database.modelRealm.CartRealm;
 import com.example.fruit_application.database.modelRealm.UserRealm;
 
 import io.realm.Realm;
@@ -9,7 +7,7 @@ import io.realm.Realm;
 public class UserDBHelper {
     private static UserDBHelper instance = null;
 
-    public void CartDBHelper(){
+    public void UserDBHelper(){
 
     }
 

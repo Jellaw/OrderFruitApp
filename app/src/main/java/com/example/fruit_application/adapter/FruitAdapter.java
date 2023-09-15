@@ -44,7 +44,7 @@ public class FruitAdapter extends RecyclerView.Adapter<FruitAdapter.ViewHolder> 
         Glide.with(context)
                 .load(list.get(position).getIgm())
                 .into(holder.binding.imageViewFruitItem);
-        holder.binding.fruitPrice.setText("$" + list.get(position));
+        holder.binding.fruitPrice.setText("$" + list.get(position).getPrice());
         holder.binding.fruitName.setText(list.get(position).getName());
 
         int img = list.get(position).getIgm();
@@ -58,7 +58,7 @@ public class FruitAdapter extends RecyclerView.Adapter<FruitAdapter.ViewHolder> 
                 intent.putExtra("img", img);
                 intent.putExtra("name", name);
                 intent.putExtra("price", price);
-                intent.putExtra("idfr", idfr);
+                intent.putExtra("idFruit", idfr);
                 intent.putExtra("idUser", idUser);
                 context.startActivity(intent);
             }

@@ -43,7 +43,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         Glide.with(context)
                 .load(list.get(position).getImgFruit())
                 .into(holder.binding.imageViewFruit);
-        holder.binding.tvPrice.setText("$" + list.get(position));
+        holder.binding.tvPrice.setText(list.get(position).getPriceFruit());
         holder.binding.tvName.setText(list.get(position).getNamefruit());
         holder.binding.tvKg.setText("" + list.get(position).getQuanlity()+ "kg");
         holder.binding.deleteCart.setOnClickListener(view -> {
@@ -62,7 +62,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        private ItemCartBinding binding;
+        private final ItemCartBinding binding;
         public ViewHolder(@NonNull ItemCartBinding itemView) {
             super(itemView.getRoot());
             binding = itemView;

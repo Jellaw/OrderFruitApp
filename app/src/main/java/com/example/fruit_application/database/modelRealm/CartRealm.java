@@ -9,7 +9,6 @@ public class CartRealm extends RealmObject {
     private String idUs;
     private int idFruit;
     private String namefruit;
-    private int imgFruit;
     private int quanlity;
     private String priceFruit;
 
@@ -43,14 +42,6 @@ public class CartRealm extends RealmObject {
 
     public void setNamefruit(String namefruit) {
         this.namefruit = namefruit;
-    }
-
-    public int getImgFruit() {
-        return imgFruit;
-    }
-
-    public void setImgFruit(int imgFruit) {
-        this.imgFruit = imgFruit;
     }
 
     public int getQuanlity() {

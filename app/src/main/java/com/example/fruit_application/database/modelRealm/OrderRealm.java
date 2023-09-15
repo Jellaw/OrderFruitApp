@@ -1,30 +1,18 @@
-package com.example.fruit_application.Model;
+package com.example.fruit_application.database.modelRealm;
 
-public class Order {
-    int idOrder;
-    String nameFruit;
-    String quantity;
-    String totalPrice;
-    String delivery;
-    Boolean isShipped;
-    Boolean isExpand = false;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-    public Order(int idOrder, String nameFruit, String quantity, String totalPrice, String delivery, Boolean isShipped) {
-        this.idOrder = idOrder;
-        this.nameFruit = nameFruit;
-        this.quantity = quantity;
-        this.totalPrice = totalPrice;
-        this.delivery = delivery;
-        this.isShipped = isShipped;
-    }
-
-    public Boolean getExpand() {
-        return isExpand;
-    }
-
-    public void setExpand(Boolean expand) {
-        isExpand = expand;
-    }
+public class OrderRealm extends RealmObject {
+    @PrimaryKey
+    private int idOrder;
+    private String uID;
+    private int idFruit;
+    private String nameFruit;
+    private String quantity;
+    private String totalPrice;
+    private String delivery;
+    private Boolean isShipped;
 
     public int getIdOrder() {
         return idOrder;
@@ -32,6 +20,22 @@ public class Order {
 
     public void setIdOrder(int idOrder) {
         this.idOrder = idOrder;
+    }
+
+    public String getuID() {
+        return uID;
+    }
+
+    public void setuID(String uID) {
+        this.uID = uID;
+    }
+
+    public int getIdFruit() {
+        return idFruit;
+    }
+
+    public void setIdFruit(int idFruit) {
+        this.idFruit = idFruit;
     }
 
     public String getNameFruit() {
@@ -74,4 +78,3 @@ public class Order {
         isShipped = shipped;
     }
 }
-

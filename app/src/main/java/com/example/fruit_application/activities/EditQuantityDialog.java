@@ -1,4 +1,4 @@
-package com.example.fruit_application;
+package com.example.fruit_application.activities;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.fruit_application.Model.Cart;
+import com.example.fruit_application.R;
 import com.example.fruit_application.fragments.Cartfragment;
 
 public class EditQuantityDialog extends Dialog {

@@ -5,7 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
     <data >
-
+        <variable
+            name="loginViewModel"
+            type="com.example.fruit_application.activities.viewModel.LoginRegisterViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
