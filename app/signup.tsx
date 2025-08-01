@@ -1,0 +1,117 @@
+import { useRouter } from 'expo-router';
+import { doc, setDoc } from 'firebase/firestore';
+import React, { useState } from 'react';
+import { Alert, SafeAreaView, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import InputField from '../components/InputField';
+import { signUp } from '../lib/auth';
+import { db } from '../lib/firebaseConfig';
+
+export default function CreateAccountScreen() {
+  const router = useRouter();
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
+
+  const handleSignUp = async () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(email)) {
+            Alert.alert('Lỗi', 'Email không hợp lệ');
+            return;
+        }
+
+        if (password.length < 6) {
+            Alert.alert('Lỗi', 'Mật khẩu phải có ít nhất 6 ký tự');
+            return;
+        }
+
+        if (password !== password2) {
+            Alert.alert('Lỗi', 'Mật khẩu không trùng khớp');
+            return;
+        }
+    try {
+
+        const userCredential = await signUp(email, password);
+        const user = userCredential.user;
+    
+        // ✅ Lưu họ tên vào Firestore theo uid
+        await setDoc(doc(db, 'users', user.uid), {
+          name: name,
+          email: email,
+          createdAt: new Date(),
+        });
+
+      Alert.alert('Đăng kí thành công');
+      router.replace('/signin');
+    } catch (error: any) {
+        if (error.code === 'auth/email-already-in-use') {
+            Alert.alert('Lỗi', 'Email đã được sử dụng');
+          } else {
+            Alert.alert('Đăng ký thất bại', error.message);
+          }
+    }
+  };
+  
+  return (
+    <SafeAreaView style={styles.container}>
+
+      <Text style={styles.title}>Tạo Tài Khoản</Text>
+
+      <InputField icon="user" placeholder="Họ và Tên" value={name} onChangeText={setName} />
+      <InputField icon="mail" placeholder="Email" value={email} onChangeText={setEmail} />
+      <InputField icon="lock" placeholder="Mật khẩu" secureTextEntry value={password} onChangeText={setPassword} />
+      <InputField icon="lock" placeholder="Nhập lại mật khẩu" secureTextEntry value={password2} onChangeText={setPassword2} />
+
+      <TouchableOpacity style={styles.button} onPress={handleSignUp}>
+        <Text style={styles.buttonText}>ĐĂNG KÍ</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => router.push('/signin')}>
+        <Text style={styles.linkText}>ĐĂNG NHẬP</Text>
+      </TouchableOpacity>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 24,
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+  },
+  backButton: {
+    position: 'absolute',
+    top: 50,
+    left: 20,
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginBottom: 40,
+    color: '#593C1F',
+  },
+  button: {
+    backgroundColor: '#FDB813',
+    padding: 15,
+    borderRadius: 30,
+    alignItems: 'center',
+    marginTop: 20,
+    shadowColor: '#FDB813',
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 10 },
+    shadowRadius: 10,
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  linkText: {
+    textAlign: 'center',
+    marginTop: 30,
+    color: '#888',
+  },
+});
