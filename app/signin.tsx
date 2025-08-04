@@ -1,8 +1,10 @@
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { Alert, SafeAreaView, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import InputField from '../components/InputField';
 import { signIn } from '../lib/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function SignInScreen() {
@@ -10,11 +12,22 @@ export default function SignInScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  useEffect(() => {
+    const checkLogin = async () => {
+      const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
+      if (isLoggedIn === 'true') {
+        router.replace('/home'); // Nếu đã đăng nhập → vào thẳng home
+      }
+    };
+    checkLogin();
+  }, []);
+
   const handleSignIn = async () => {
     try {
       await signIn(email, password);
+      await AsyncStorage.setItem('isLoggedIn', 'true'); //lưu trạng thái
       Alert.alert('Đăng nhập thành công');
-       router.replace('/home');
+       router.replace('/intro');
     } catch (error: any) {
         let message = 'Lỗi đăng nhập';
         if (error.code === 'auth/user-not-found') {
@@ -33,7 +46,7 @@ export default function SignInScreen() {
       <InputField icon="mail" placeholder="Email" value={email} onChangeText={setEmail} />
       <InputField icon="lock" placeholder="Mật Khẩu" secureTextEntry value={password} onChangeText={setPassword} />
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => router.replace('/forgetpass')}>
         <Text style={styles.forgot}>Quên mật khẩu?</Text>
       </TouchableOpacity>
 
@@ -41,7 +54,7 @@ export default function SignInScreen() {
         <Text style={styles.buttonText}>ĐĂNG NHẬP</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => router.push('/signup')}>
+      <TouchableOpacity onPress={() => router.replace('/signup')}>
         <Text style={styles.linkText}>TẠO TÀI KHOẢN</Text>
       </TouchableOpacity>
     </SafeAreaView>

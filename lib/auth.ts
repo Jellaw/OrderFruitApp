@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from './firebaseConfig';
 
 // Đăng ký tài khoản mới
@@ -12,3 +12,6 @@ export async function signIn(email: string, password: string) {
 }
 
 // Reset pass
+export async function sendPass(email:string) {
+  return await sendPasswordResetEmail(auth, email);
+}
