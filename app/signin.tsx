@@ -5,6 +5,7 @@ import { Alert, SafeAreaView, StyleSheet, Text, TouchableOpacity } from 'react-n
 import InputField from '../components/InputField';
 import { signIn } from '../lib/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 
 
 export default function SignInScreen() {
@@ -26,16 +27,15 @@ export default function SignInScreen() {
     try {
       await signIn(email, password);
       await AsyncStorage.setItem('isLoggedIn', 'true'); //lưu trạng thái
-      Alert.alert('Đăng nhập thành công');
+      Toast.show({
+        type: 'success',
+        text1: 'Đăng nhập thành công',
+        position: 'bottom', // hoặc 'bottom'
+        visibilityTime: 3000, // (ms)
+      });
        router.replace('/intro');
     } catch (error: any) {
-        let message = 'Lỗi đăng nhập';
-        if (error.code === 'auth/user-not-found') {
-          message = 'Tài khoản không tồn tại';
-        } else if (error.code === 'auth/wrong-password') {
-          message = 'Mật khẩu không đúng';
-        }
-        Alert.alert('Đăng nhập thất bại', message);
+        Alert.alert('Lỗi', error.message);
     }
   };
 

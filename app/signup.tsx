@@ -46,11 +46,7 @@ export default function CreateAccountScreen() {
       Alert.alert('Đăng kí thành công');
       router.replace('/signin');
     } catch (error: any) {
-        if (error.code === 'auth/email-already-in-use') {
-            Alert.alert('Lỗi', 'Email đã được sử dụng');
-          } else {
-            Alert.alert('Đăng ký thất bại', error.message);
-          }
+      Alert.alert('Lỗi', error.message);
     }
   };
   
@@ -68,7 +64,7 @@ export default function CreateAccountScreen() {
         <Text style={styles.buttonText}>ĐĂNG KÍ</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => router.push('/signin')}>
+      <TouchableOpacity onPress={() => router.replace('/signin')}>
         <Text style={styles.linkText}>ĐĂNG NHẬP</Text>
       </TouchableOpacity>
     </SafeAreaView>

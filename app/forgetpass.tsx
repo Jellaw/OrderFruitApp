@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Alert, SafeAreaView, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import InputField from '../components/InputField';
 import { sendPass } from '../lib/auth';
-
+import Toast from 'react-native-toast-message';
 
 export default function ForgetPassScreen() {
   const router = useRouter();
@@ -11,19 +11,25 @@ export default function ForgetPassScreen() {
 
   const handleReset = async () => {
     if (!email || !email.includes('@')) {
-      Alert.alert('Vui lòng nhập email hợp lệ');
+      Toast.show({
+        type: 'error',
+        text1: 'Vui lòng nhập email hợp lệ',
+        position: 'bottom', // hoặc 'bottom'
+        visibilityTime: 3000, // (ms)
+      });
       return;
     }
     try {
       await sendPass(email);
-      Alert.alert('Vui lòng kiểm tra email để đặt lại mật khẩu');
+      Toast.show({
+        type: 'info',
+        text1: 'Vui lòng kiểm tra email để đặt lại mật khẩu',
+        position: 'bottom', // hoặc 'bottom'
+        visibilityTime: 3000, // (ms)
+      });
       router.replace('/signin');
     } catch (error: any) {
-      let message = 'Lỗi gửi email';
-      if (error.code === 'auth/user-not-found') {
-        message = 'Tài khoản không tồn tại';
-      }
-      Alert.alert('Gửi mật khẩu thất bại', message);
+      Alert.alert('Lỗi', error.message);
     }
   };
   

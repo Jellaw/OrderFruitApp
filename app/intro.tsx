@@ -68,7 +68,7 @@ export default function IntroScreen() {
         <View style={styles.dots}>{pagination()}</View>
 
         {pageIndex === fruitData.length - 1 ? (
-          <TouchableOpacity style={styles.getStartedBtn} onPress={() => router.push('/home')}>
+          <TouchableOpacity style={styles.getStartedBtn} onPress={() => router.replace('/home')}>
             <Text style={styles.getStartedText}>Bắt đầu mua hàng</Text>
           </TouchableOpacity>
         ) : (

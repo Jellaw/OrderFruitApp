@@ -1,11 +1,10 @@
-import { getImageFromName } from '@/utils/helpers';
-import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { collection, getDocs } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { Dimensions, FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import BottomNavigation from '../components/BottomNavigation';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Pressable, Dimensions } from 'react-native';
+import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../lib/firebaseConfig';
+import { Ionicons } from '@expo/vector-icons';
+import BottomNavigation from '../components/BottomNavigation';
 
 const { width } = Dimensions.get('window');
 const cardWidth = (width - 60) / 2; // 2 cột, 20px padding mỗi bên và 20px giữa
@@ -44,14 +43,39 @@ export default function SeeMoreScreen() {
 
   useEffect(() => {
     setProducts(sortProducts(sortOption, allProducts));
-  }, [sortOption]); 
-
+  }, [sortOption]);
+  
+  const getImageFromName = (name: string) => {
+    switch (name) {
+      case 'banhmi':
+      case 'phobo':
+      case 'trasua':
+      case 'khobo':
+        return require('../assets/images/image_coffee.png');
+      default:
+        return require('../assets/images/icon.png');
+    }
+  };
+  const getCategoryFromName = (name: string) => {
+    switch (name){
+      case 'foods':
+        return 'Đồ ăn';
+      case 'drinks':
+        return 'Đồ uống';
+      case 'fruits':
+        return 'Hoa quả';
+      case 'snacks':
+        return 'Đồ ăn nhanh';
+    default:
+      return 'Khác';
+    }
+  }
   return (
     <View style={styles.container}>
       {/* Header */}
         <View style={styles.header}>
             <Ionicons name="arrow-back-outline" size={24} onPress={() => router.back()} />
-            <Text style={styles.title}>Tất cả sản phẩm</Text>
+            <Text style={styles.title}>Danh sách yêu thích</Text>
             <Text>      </Text>
         </View>
 
