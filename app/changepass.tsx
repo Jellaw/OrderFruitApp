@@ -4,12 +4,15 @@ import { changePassword } from '../lib/auth';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ChangePasswordScreen() {
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
 
   const handleChangePassword = async () => {
@@ -38,11 +41,24 @@ export default function ChangePasswordScreen() {
       Toast.show({
         type: 'success',
         text1: 'Đổi mật khẩu thành công',
-        position: 'bottom', 
+        position: 'top', 
         visibilityTime: 3000, // (ms)
       });
       router.replace('/setting');
     } catch (error: any) {
+      if (error.message === 'Vui lòng đăng nhập lại để đổi mật khẩu' ||
+          error.code === 'custom/requires-relogin') {
+        Toast.show({
+          type: 'success',
+          text1: 'Vui lòng đăng nhập lại để đổi mật khẩu',
+          position: 'top', 
+          visibilityTime: 3000, // (ms)
+        })
+        await AsyncStorage.removeItem('isLoggedIn');
+        router.replace('/signin');
+        return;
+      }
+
       Alert.alert('Lỗi', error.message);
     }
   };
@@ -56,30 +72,30 @@ export default function ChangePasswordScreen() {
       </View>
 
       <View style={styles.inputContainer}>
-      <TextInput style={styles.input}  placeholder="Mật khẩu cũ"  secureTextEntry={!showPassword}  value={oldPassword}  onChangeText={setOldPassword}/>
-      <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+        <TextInput style={styles.input}  placeholder="Mật khẩu cũ"  secureTextEntry={!showOldPassword}  value={oldPassword}  onChangeText={setOldPassword}/>
+        <TouchableOpacity onPress={() => setShowOldPassword(!showOldPassword)}>
+          <Ionicons
+            name={showOldPassword ? 'eye-off' : 'eye'}
+            size={22}
+            color="#999"
+          />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.inputContainer}>
+      <TextInput style={styles.input}  placeholder="Mật khẩu mới"  secureTextEntry={!showNewPassword}  value={newPassword}  onChangeText={setNewPassword}/>
+      <TouchableOpacity onPress={() => setShowNewPassword(!showNewPassword)}>
         <Ionicons
-          name={showPassword ? 'eye-off' : 'eye'}
+          name={showNewPassword ? 'eye-off' : 'eye'}
           size={22}
           color="#999"
         />
       </TouchableOpacity>
       </View>
       <View style={styles.inputContainer}>
-      <TextInput style={styles.input}  placeholder="Mật khẩu mới"  secureTextEntry={!showPassword}  value={newPassword}  onChangeText={setNewPassword}/>
-      <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+      <TextInput style={styles.input}  placeholder="Xác nhận mật khẩu"  secureTextEntry={!showConfirmPassword}  value={confirmPassword}  onChangeText={setConfirmPassword}/>
+      <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
         <Ionicons
-          name={showPassword ? 'eye-off' : 'eye'}
-          size={22}
-          color="#999"
-        />
-      </TouchableOpacity>
-      </View>
-      <View style={styles.inputContainer}>
-      <TextInput style={styles.input}  placeholder="Xác nhận mật khẩu"  secureTextEntry={!showPassword}  value={confirmPassword}  onChangeText={setConfirmPassword}/>
-      <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-        <Ionicons
-          name={showPassword ? 'eye-off' : 'eye'}
+          name={showConfirmPassword ? 'eye-off' : 'eye'}
           size={22}
           color="#999"
         />

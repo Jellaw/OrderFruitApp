@@ -1,10 +1,12 @@
+import { getImageFromName } from '@/utils/helpers';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Pressable, Dimensions } from 'react-native';
 import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../lib/firebaseConfig';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Dimensions, FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import BottomNavigation from '../components/BottomNavigation';
+import { db } from '../lib/firebaseConfig';
+import { useFocusEffect } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 const cardWidth = (width - 60) / 2; // 2 cột, 20px padding mỗi bên và 20px giữa
@@ -26,57 +28,49 @@ export default function SeeMoreScreen() {
       case 'az':
         return [...products].sort((a, b) => a.name.localeCompare(b.name));
       default:
-        return products; // popular
+        return products; 
     }
   };
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const snapshot = await getDocs(collection(db, 'products'));
-      const all = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      const filtered = all.filter((item: any) => item.category === category);
-      setAllProducts(filtered);
-      setProducts(sortProducts(sortOption, filtered));
+  useFocusEffect(
+    useCallback(() => {
+    const fetchFavorites = async () => {
+      const userId = await AsyncStorage.getItem('userId');
+      if (!userId) return;
+  
+      try {
+        // Lấy toàn bộ products
+        const snapshot = await getDocs(collection(db, 'products'));
+        const all = snapshot.docs.map(doc => ({
+          productId: doc.id,
+          ...doc.data(),
+        }));
+  
+        // Lọc các sản phẩm mà user đã yêu thích
+        const favorites = all.filter((item: any) =>
+          item.likedBy?.includes(userId)
+        );
+  
+        setAllProducts(favorites);
+        setProducts(sortProducts(sortOption, favorites));
+      } catch (error) {
+        console.error(' Lỗi khi lấy danh sách yêu thích:', error);
+      }
     };
-    fetchProducts();
-  }, []);
+  
+    fetchFavorites();
+  }, []));
+  
 
   useEffect(() => {
     setProducts(sortProducts(sortOption, allProducts));
   }, [sortOption]);
   
-  const getImageFromName = (name: string) => {
-    switch (name) {
-      case 'banhmi':
-      case 'phobo':
-      case 'trasua':
-      case 'khobo':
-        return require('../assets/images/image_coffee.png');
-      default:
-        return require('../assets/images/icon.png');
-    }
-  };
-  const getCategoryFromName = (name: string) => {
-    switch (name){
-      case 'foods':
-        return 'Đồ ăn';
-      case 'drinks':
-        return 'Đồ uống';
-      case 'fruits':
-        return 'Hoa quả';
-      case 'snacks':
-        return 'Đồ ăn nhanh';
-    default:
-      return 'Khác';
-    }
-  }
   return (
     <View style={styles.container}>
       {/* Header */}
         <View style={styles.header}>
-            <Ionicons name="arrow-back-outline" size={24} onPress={() => router.back()} />
             <Text style={styles.title}>Danh sách yêu thích</Text>
-            <Text>      </Text>
         </View>
 
         <View style={styles.filterContainer}>
@@ -110,11 +104,11 @@ export default function SeeMoreScreen() {
       <FlatList
         data={products}
         numColumns={2}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.productId}
         columnWrapperStyle={styles.row}
         renderItem={({ item }) => (
             <Pressable
-            onPress={() => console.log('Pressed:', item.name)}
+            onPress={() => router.push({ pathname: '/product-info', params: { productId: item.productId } })}
             style={({ pressed }) => [
               styles.card,
               { opacity: pressed ? 0.4 : 1 },
@@ -139,7 +133,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: 20,

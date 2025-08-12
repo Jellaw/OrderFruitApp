@@ -36,7 +36,7 @@ export default function SettingsScreen() {
         id: '2',
         title: 'Lịch sử mua hàng',
         icon: <MaterialIcons name="list-alt" size={20} color="#8B8B8B" />,
-        onPress: () => console.log('Navigate to Orders'),
+        onPress: () => router.replace('/history-order'),
     },
     {
         id: '3',
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   },
   itemText: {
     flex: 1,
-    fontSize: 16,
+    fontSize: 17,
     color: '#333',
   },
 });

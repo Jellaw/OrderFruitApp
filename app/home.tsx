@@ -7,10 +7,10 @@
   import { Dimensions, FlatList, Image, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View, } from 'react-native';
   import BottomNavigation from '../components/BottomNavigation';
   import { db } from '../lib/firebaseConfig';
-
+  import { onAuthStateChanged } from 'firebase/auth';
+  import { auth } from '../lib/firebaseConfig';
 
   const { width } = Dimensions.get('window');
-
 
   export default function HomeScreen() {
     const router = useRouter();
@@ -18,7 +18,7 @@
     useEffect(() => {
       const fetchProducts = async () => {
         const snapshot = await getDocs(collection(db, 'products'));
-        const products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const products = snapshot.docs.map(doc => ({ productId: doc.id, ...doc.data() }));
 
         // Nhóm sản phẩm theo category
         const grouped = products.reduce((acc: any, product: any) => {
@@ -40,15 +40,13 @@
       fetchProducts();
     }, []);
     useEffect(() => {
-      const checkLoginStatus = async () => {
-        const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
-        if (!isLoggedIn) {
-          router.replace('/signin');
-        }
+      const getUser = async () => {
+        const id = await AsyncStorage.getItem('userId');
+        console.log(" userId:", id);
       };
-    
-      checkLoginStatus();
+      getUser();
     }, []);
+    
     
     return (
       <View style={styles.container}>
@@ -84,10 +82,10 @@
                 data={item.data}
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                keyExtractor={(product) => product.id}
+                keyExtractor={(product) => product.productId}
                 renderItem={({ item: product }) => (
                   <Pressable
-                    onPress={() => router.push({pathname:'/product-info', params: {name:product.id}})} 
+                    onPress={() => router.push({pathname:'/product-info', params: {productId : product.productId}})} 
                     style={({ pressed }) => [
                       styles.card,
                       { opacity: pressed ? 0.4 : 1 },

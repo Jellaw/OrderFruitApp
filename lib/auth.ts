@@ -1,10 +1,6 @@
-import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, updatePassword, EmailAuthProvider, reauthenticateWithCredential  } from 'firebase/auth';
-import { auth } from './firebaseConfig';
-import { signOut } from 'firebase/auth';
-import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Toast from 'react-native-toast-message';
-
+import { EmailAuthProvider, createUserWithEmailAndPassword, reauthenticateWithCredential, sendPasswordResetEmail, signInWithEmailAndPassword, updatePassword } from 'firebase/auth';
+import { auth } from './firebaseConfig';
 
 // Đăng ký tài khoản mới
 export async function signUp(email: string, password: string) {
@@ -20,8 +16,18 @@ export async function signUp(email: string, password: string) {
 export async function signIn(email: string, password: string) {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    return { user: userCredential.user };
+
+    const user = userCredential.user;
+    const uid = user.uid;
+    console.log('User ID:', uid);
+
+    await AsyncStorage.setItem('uid', uid);
+    
+    return user;
+  
   } catch (error: any) {
+    console.log('Firebase error code:', error.code);
+    console.log('Firebase error message:', error.message);
     throw formatFirebaseError(error);
   }
 }
@@ -39,17 +45,11 @@ export async function sendPass(email: string) {
 // Đổi pass
 export async function changePassword(oldPassword: string, newPassword: string) {
   const user = auth.currentUser;
+
   if (!user || !user.email) {
-    await signOut(auth); 
-    await AsyncStorage.removeItem('isLoggedIn');
-    Toast.show({
-      type: 'error',
-      text1: 'Vui lòng đăng nhập lại để đổi mật khẩu',
-      position: 'top', 
-      visibilityTime: 3000, // (ms)
-    });
-    router.replace('/signin');
-    return;
+    const error: any = new Error('Vui lòng đăng nhập lại để đổi mật khẩu');
+    error.code = 'custom/requires-relogin';
+    throw error;
   }
 
   // Tạo credential từ email và mật khẩu cũ
@@ -61,6 +61,7 @@ export async function changePassword(oldPassword: string, newPassword: string) {
 
     // Đổi mật khẩu nếu xác thực thành công
     await updatePassword(user, newPassword);
+    await user.reload();
     return 'Đổi mật khẩu thành công';
   } catch (error: any) {
      if (error.code === 'auth/invalid-credential') {
@@ -77,6 +78,9 @@ export async function changePassword(oldPassword: string, newPassword: string) {
 function formatFirebaseError(error: any): Error {
   let message = 'Có lỗi xảy ra';
   switch (error.code) {
+    case 'auth/invalid-credential' :
+      message = 'Thông tin đăng nhập không hợp lệ. Vui lòng nhập lại email và mật khẩu.';
+      break;
     case 'auth/email-already-in-use':
       message = 'Email đã được sử dụng';
       break;

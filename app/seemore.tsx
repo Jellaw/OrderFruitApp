@@ -43,6 +43,7 @@ export default function SeeMoreScreen() {
   }, []);
 
   useEffect(() => {
+    console.log(sortOption)
     setProducts(sortProducts(sortOption, allProducts));
   }, [sortOption]); 
 
@@ -64,7 +65,8 @@ export default function SeeMoreScreen() {
             ].map(({ key, label }) => (
                 <Pressable
                 key={key}
-                onPress={() => setSortOption(key)}
+                onPress={() => {setSortOption(key)}}
+
                 style={[
                     styles.filterButton,
                     sortOption === key && styles.filterButtonActive,

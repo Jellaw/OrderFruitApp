@@ -6,7 +6,9 @@ import InputField from '../components/InputField';
 import { signIn } from '../lib/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
-
+import { signOut } from 'firebase/auth';
+import { auth } from '../lib/firebaseConfig';
+import { onAuthStateChanged } from 'firebase/auth';
 
 export default function SignInScreen() {
   const router = useRouter();
@@ -17,27 +19,39 @@ export default function SignInScreen() {
     const checkLogin = async () => {
       const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
       if (isLoggedIn === 'true') {
-        router.replace('/home'); // Nếu đã đăng nhập → vào thẳng home
+        router.replace('/home'); 
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+          if (user) {
+            console.log('✅ Firebase xác nhận user:', user.uid);
+            await AsyncStorage.setItem('isLoggedIn', 'true');
+            await AsyncStorage.setItem('userId', user.uid);
+          }
+        });  
+        return () => unsubscribe();   
       }
     };
     checkLogin();
   }, []);
 
-  const handleSignIn = async () => {
-    try {
-      await signIn(email, password);
-      await AsyncStorage.setItem('isLoggedIn', 'true'); //lưu trạng thái
-      Toast.show({
-        type: 'success',
-        text1: 'Đăng nhập thành công',
-        position: 'bottom', // hoặc 'bottom'
-        visibilityTime: 3000, // (ms)
-      });
-       router.replace('/intro');
-    } catch (error: any) {
-        Alert.alert('Lỗi', error.message);
-    }
-  };
+    const handleSignIn = async () => {
+      try {
+        const userCredential = await signIn(email, password);
+        const user = userCredential;
+        await AsyncStorage.setItem('isLoggedIn', 'true'); //lưu trạng thái
+        await AsyncStorage.setItem('userId', user.uid);
+        Toast.show({
+          type: 'success',
+          text1: 'Đăng nhập thành công',
+          position: 'bottom', // hoặc 'bottom'
+          visibilityTime: 3000, // (ms)
+        });
+        router.replace('/intro');
+      } catch (error: any) {
+        await AsyncStorage.removeItem('isLoggedIn');
+        await AsyncStorage.removeItem('userId');
+          Alert.alert('Lỗi', error.message);
+      }
+    };
 
   return (
     <SafeAreaView style={styles.container}>
