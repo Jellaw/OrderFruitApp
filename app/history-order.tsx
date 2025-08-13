@@ -58,12 +58,17 @@ export default function HistoryScreen(){
                 <Text style={styles.title}>Danh sách đơn hàng</Text>
                 <Text>      </Text>
             </View>
-            <FlatList 
+            {orders.length === 0? (
+                <Text style={styles.empty}>Bạn chưa có đơn hàng nào</Text>
+            ):(
+                <FlatList 
                 data={orders}
                 keyExtractor={(item) => item.id}
                 renderItem={renderItem}
                 contentContainerStyle={styles.list}
                 />
+            )}
+            
             
         </View>
     );
@@ -109,5 +114,12 @@ const styles = StyleSheet.create({
         fontSize:17,
         fontWeight:'300',
         color:'#FF4500',
+    },
+    empty:{
+        marginTop:40,
+        fontSize:20,
+        alignItems: 'center',
+        textAlign:'center',
+
     }
 })

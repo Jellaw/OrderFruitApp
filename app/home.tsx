@@ -1,14 +1,13 @@
-  import { getCategoryFromName, getImageFromName } from '@/utils/helpers';
-  import { Ionicons } from '@expo/vector-icons';
-  import AsyncStorage from '@react-native-async-storage/async-storage';
-  import { useRouter } from 'expo-router';
-  import { collection, getDocs } from 'firebase/firestore';
-  import React, { useEffect, useState } from 'react';
-  import { Dimensions, FlatList, Image, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View, } from 'react-native';
-  import BottomNavigation from '../components/BottomNavigation';
-  import { db } from '../lib/firebaseConfig';
-  import { onAuthStateChanged } from 'firebase/auth';
-  import { auth } from '../lib/firebaseConfig';
+import { getCategoryFromName, getImageFromName } from '@/utils/helpers';
+import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRouter } from 'expo-router';
+import { collection, getDocs } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
+import { Dimensions, FlatList, Image, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View, } from 'react-native';
+import BottomNavigation from '../components/BottomNavigation';
+import { db } from '../lib/firebaseConfig';
+import { StackAnimationTypes } from 'react-native-screens';
 
   const { width } = Dimensions.get('window');
 
@@ -102,7 +101,7 @@
           )}
         />
 
-        <BottomNavigation />
+        <BottomNavigation/>
 
       </View>
     );

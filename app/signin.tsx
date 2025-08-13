@@ -22,7 +22,6 @@ export default function SignInScreen() {
         router.replace('/home'); 
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
           if (user) {
-            console.log('✅ Firebase xác nhận user:', user.uid);
             await AsyncStorage.setItem('isLoggedIn', 'true');
             await AsyncStorage.setItem('userId', user.uid);
           }

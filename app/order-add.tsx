@@ -17,7 +17,10 @@ type CartItem = {
   price: number;
   quantity: number;
 };
+type notify ={
+  id: string;
 
+}
 
 export default function AddAddressScreen(){
     const router = useRouter();
@@ -33,8 +36,8 @@ export default function AddAddressScreen(){
 
 
     const titles = ["Điền thông tin", "Phương thức thanh toán", "Xác nhận thông tin"];
-    const nameRegex = /^[A-Za-zÀ-ỹ\s]+$/; // Cho phép chữ cái (kể cả dấu tiếng Việt) và khoảng trắng
-    const phoneRegex = /^0[0-9]{9}$/; // Chỉ cho phép 10 chữ số
+    const nameRegex = /^[A-Za-zÀ-ỹ\s]+$/;
+    const phoneRegex = /^0[0-9]{9}$/;
 
     // Lấy cart đã copy sang orders/orderId/cart
   useEffect(() => {
