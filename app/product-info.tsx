@@ -170,8 +170,6 @@ export default function ProductInfoScreen() {
 
 
       </View>
-
-      <BottomNavigation></BottomNavigation>
     </View>
   );
 }

@@ -1,47 +1,79 @@
-import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
-import { useEffect } from 'react';
-import { Alert, SafeAreaView, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as LocalAuthentication from 'expo-local-authentication';
+import { usePathname, useRouter } from 'expo-router';
+import { onAuthStateChanged } from 'firebase/auth';
+import React, { useEffect, useState } from 'react';
+import { Alert, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 import InputField from '../components/InputField';
 import { signIn } from '../lib/auth';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Toast from 'react-native-toast-message';
-import { signOut } from 'firebase/auth';
 import { auth } from '../lib/firebaseConfig';
-import { onAuthStateChanged } from 'firebase/auth';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function SignInScreen() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(true);
+  const pathname = usePathname();
+  const [biometricType, setBiometricType] = useState<null | 'finger' | 'face'>(null);
+  const [biometricEnabled, setBiometricEnabled] = useState(false);
 
+  
   useEffect(() => {
-    const checkLogin = async () => {
-      const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
-      if (isLoggedIn === 'true') {
-        router.replace('/home'); 
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
-          if (user) {
-            await AsyncStorage.setItem('isLoggedIn', 'true');
-            await AsyncStorage.setItem('userId', user.uid);
-          }
-        });  
-        return () => unsubscribe();   
-      }
+    const loadBiometricSetting = async () => {
+      const enabled = await AsyncStorage.getItem('biometricEnabled');
+      setBiometricEnabled(enabled === 'true');
     };
-    checkLogin();
+    loadBiometricSetting();
   }, []);
 
-    const handleSignIn = async () => {
+  useEffect(() => {
+    const loadSavedEmail = async () => {
+      const savedEmail = await AsyncStorage.getItem('savedEmail');
+      if (savedEmail) {
+        setEmail(savedEmail);
+      }
+    };
+    loadSavedEmail();
+  }, []);
+  
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
+  
+      if (user && isLoggedIn === 'true') {
+        if (pathname !== '/home') {
+          router.replace('/home');
+        }
+      } else {
+        await AsyncStorage.removeItem('isLoggedIn');
+        await AsyncStorage.removeItem('userId');
+  
+        if (pathname !== '/signin') {
+          router.replace('/signin');
+        }
+      }
+      setLoading(false);
+    });
+  
+    return () => unsubscribe();
+  }, [pathname]);
+  
+
+    const handleSignIn = async (pass?: string) => {
       try {
-        const userCredential = await signIn(email, password);
+        const userCredential = await signIn(email, pass || password);
         const user = userCredential;
-        await AsyncStorage.setItem('isLoggedIn', 'true'); //lưu trạng thái
+        await AsyncStorage.setItem('isLoggedIn', 'true');
         await AsyncStorage.setItem('userId', user.uid);
+        await AsyncStorage.setItem('savedEmail', email);
+
+        
         Toast.show({
           type: 'success',
           text1: 'Đăng nhập thành công',
-          position: 'bottom', // hoặc 'bottom'
+          position: 'bottom',
           visibilityTime: 3000, // (ms)
         });
         router.replace('/intro');
@@ -52,21 +84,124 @@ export default function SignInScreen() {
       }
     };
 
+
+    const handleBiometricLogin = async () => {
+      try {
+        const hasHardware = await LocalAuthentication.hasHardwareAsync();
+        if (!hasHardware) {
+          Alert.alert('Thiết bị không hỗ trợ sinh trắc học');
+          return;
+        }
+    
+        const isEnrolled = await LocalAuthentication.isEnrolledAsync();
+        if (!isEnrolled) {
+          Alert.alert('Chưa cài Face ID hoặc vân tay');
+          return;
+        }
+    
+        // Lấy danh sách loại sinh trắc học hỗ trợ
+        const supportedTypes = await LocalAuthentication.supportedAuthenticationTypesAsync();
+    
+        // Chuyển thành tên hiển thị
+        const options = supportedTypes.map((type) => {
+          if (type === LocalAuthentication.AuthenticationType.FINGERPRINT) return 'Vân tay';
+          if (type === LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION) return 'Face ID';
+          if (type === LocalAuthentication.AuthenticationType.IRIS) return 'Quét mống mắt';
+          return 'Khác';
+        });
+    
+        if (options.length > 1) {
+          Alert.alert(
+            'Chọn phương thức',
+            'Bạn muốn đăng nhập bằng?',
+            options.map((opt) => ({
+              text: opt,
+              onPress: () => authenticateWithBiometrics(opt),
+            }))
+          );
+        } else {
+          authenticateWithBiometrics(options[0]);
+        }
+      } catch (err: any) {
+        Alert.alert('Lỗi', err.message);
+      }
+    };
+    
+    const authenticateWithBiometrics = async (method: string) => {
+      const auth = await LocalAuthentication.authenticateAsync({
+        promptMessage: `Xác thực bằng ${method}`,
+        fallbackLabel: 'Nhập mật khẩu',
+      });
+    
+      if (auth.success) {
+        const savedPassword = await AsyncStorage.getItem('savedPassword');
+        if (!savedPassword) {
+          Alert.alert('Không tìm thấy mật khẩu, vui lòng đăng nhập thủ công');
+          return;
+        }
+        handleSignIn(savedPassword);
+      }
+    };
+    
+    useEffect(() => {
+      const checkBiometricType = async () => {
+        try {
+          const hasHardware = await LocalAuthentication.hasHardwareAsync();
+          const isEnrolled = await LocalAuthentication.isEnrolledAsync();
+          if (!hasHardware || !isEnrolled) return;
+  
+          // Ss
+          const savedEmail = await AsyncStorage.getItem('savedEmail');
+          if (!savedEmail || savedEmail !== email) {
+            setBiometricType(null);
+            return;
+          }
+  
+          const supportedTypes = await LocalAuthentication.supportedAuthenticationTypesAsync();
+          if (supportedTypes.includes(LocalAuthentication.AuthenticationType.FINGERPRINT)) {
+            setBiometricType('finger');
+          } else if (supportedTypes.includes(LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION)) {
+            setBiometricType('face');
+          }
+        } catch (err) {
+          console.log('Lỗi:', err);
+        }
+      };
+  
+      checkBiometricType();
+    }, [email]);
+
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Đăng Nhập</Text>
 
       <InputField icon="mail" placeholder="Email" value={email} onChangeText={setEmail} />
       <InputField icon="lock" placeholder="Mật Khẩu" secureTextEntry value={password} onChangeText={setPassword} />
+      <View style={styles.Row}>
+        <TouchableOpacity onPress={() => router.replace('/forgetpass')}>
+          <Text style={styles.forgot}>Quên mật khẩu?</Text>
+        </TouchableOpacity>
+        {biometricEnabled && biometricType === 'finger' && (
+          <TouchableOpacity onPress={handleBiometricLogin}>
+            <Ionicons name="finger-print-outline" size={28} />
+          </TouchableOpacity>
+        )}
 
-      <TouchableOpacity onPress={() => router.replace('/forgetpass')}>
-        <Text style={styles.forgot}>Quên mật khẩu?</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.button} onPress={handleSignIn}>
+        {biometricEnabled && biometricType === 'face' && (
+          <TouchableOpacity onPress={handleBiometricLogin}>
+            <Ionicons name="scan-outline" size={28} /> 
+            {/* Bạn có thể đổi sang icon Face ID đẹp hơn */}
+          </TouchableOpacity>
+        )}
+        
+      </View>
+      <TouchableOpacity style={styles.button} onPress={() => {
+        AsyncStorage.setItem('savedPassword', password);
+        handleSignIn();
+        }}>
         <Text style={styles.buttonText}>ĐĂNG NHẬP</Text>
       </TouchableOpacity>
-
       <TouchableOpacity onPress={() => router.replace('/signup')}>
         <Text style={styles.linkText}>TẠO TÀI KHOẢN</Text>
       </TouchableOpacity>
@@ -89,9 +224,9 @@ const styles = StyleSheet.create({
     color: '#593C1F',
   },
   forgot: {
-    textAlign: 'right',
-    marginVertical: 8,
-    color: '#888',
+    textAlign: 'left',
+    fontSize:14,
+    color: 'blue',
   },
   button: {
     backgroundColor: '#FDB813',
@@ -113,4 +248,10 @@ const styles = StyleSheet.create({
     marginTop: 30,
     color: '#888',
   },
+  Row:{
+    justifyContent:'space-between',
+    flexDirection:'row',
+    paddingHorizontal:17,
+    marginTop:17,
+  }
 });

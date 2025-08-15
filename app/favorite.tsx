@@ -120,7 +120,6 @@ export default function SeeMoreScreen() {
           </Pressable>
         )}
       />
-      <BottomNavigation></BottomNavigation>
     </View>
   );
 }
@@ -138,8 +137,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: 22,
+    fontWeight: 'bold',
   },
   filterContainer: {
     flexDirection: 'row',

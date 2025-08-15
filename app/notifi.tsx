@@ -11,9 +11,8 @@ export default function NotifyScreen(){
     return(
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.headerTitle}>Cài Đặt</Text>
+                <Text style={styles.headerTitle}>Thông báo</Text>
             </View>
-            <BottomNavigation></BottomNavigation>
         </View>
     );
 }
@@ -30,8 +29,8 @@ const styles = StyleSheet.create({
         paddingBottom: 30,
     },
     headerTitle: {
-        fontSize: 20,
-        fontWeight: '600',
+        fontSize: 22,
+        fontWeight: 'bold',
         color: '#333',
     },
 })

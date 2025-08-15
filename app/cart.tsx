@@ -197,7 +197,6 @@ export default function CartScreen() {
               <Text style={styles.buttonText}>MUA HÀNG</Text>
             </TouchableOpacity>
       </View>
-      <BottomNavigation />
     </View>
   );
 }

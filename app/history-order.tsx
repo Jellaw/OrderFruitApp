@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
         paddingBottom:30,
     },
     title: {
-        fontSize: 18,
+        fontSize: 22,
         fontWeight: '600',
     },
     item:{

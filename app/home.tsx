@@ -1,24 +1,33 @@
 import { getCategoryFromName, getImageFromName } from '@/utils/helpers';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
+import {
+  onAuthStateChanged
+} from 'firebase/auth';
 import { collection, getDocs } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Dimensions, FlatList, Image, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View, } from 'react-native';
-import BottomNavigation from '../components/BottomNavigation';
-import { db } from '../lib/firebaseConfig';
-import { StackAnimationTypes } from 'react-native-screens';
-
+import { auth, db } from '../lib/firebaseConfig';
   const { width } = Dimensions.get('window');
 
   export default function HomeScreen() {
     const router = useRouter();
     const [categories, setCategories] = useState<any[]>([]);
-    useEffect(() => {
+    const [searchText, setSearchText] = useState("");
+
+    useFocusEffect(useCallback(() => {
       const fetchProducts = async () => {
         const snapshot = await getDocs(collection(db, 'products'));
-        const products = snapshot.docs.map(doc => ({ productId: doc.id, ...doc.data() }));
+        let products = snapshot.docs.map(doc => ({ productId: doc.id, ...doc.data() as any}));
 
+        // Nếu có từ khóa thì lọc theo tên
+        if (searchText.trim() !== "") {
+          const keyword = searchText.trim().toLowerCase();
+          products = products.filter(p => p.name?.toLowerCase().includes(keyword));
+        }
+        
         // Nhóm sản phẩm theo category
         const grouped = products.reduce((acc: any, product: any) => {
           const cat = product.category || 'Khác';
@@ -27,7 +36,6 @@ import { StackAnimationTypes } from 'react-native-screens';
           return acc;
         }, {});
 
-        // Biến thành array có title và data
         const groupedArray = Object.keys(grouped).map(key => ({
           title: key,
           data: grouped[key],
@@ -37,7 +45,9 @@ import { StackAnimationTypes } from 'react-native-screens';
       };
 
       fetchProducts();
-    }, []);
+    }, [categories, searchText]));
+
+
     useEffect(() => {
       const getUser = async () => {
         const id = await AsyncStorage.getItem('userId');
@@ -46,10 +56,24 @@ import { StackAnimationTypes } from 'react-native-screens';
       getUser();
     }, []);
     
+    useEffect(() => {
+      const unsubscribe = onAuthStateChanged(auth, async (user) => {
+        const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
+    
+        if (user || isLoggedIn === 'true') {
+          
+        } else {
+          router.replace('/signin');
+        }
+      });
+    
+      return () => unsubscribe();
+    }, []);
+    
+
     
     return (
       <View style={styles.container}>
-        {/* Header */}
         <View style={styles.header}>
           <View style={styles.headerLeft}>
           <Image source={require('../assets/images/logo_app.png')} style={styles.logoApp} />
@@ -58,10 +82,9 @@ import { StackAnimationTypes } from 'react-native-screens';
           <Ionicons name="person-circle-outline" size={30} color="#999" />
         </View>
 
-        {/* Search */}
         <View style={styles.searchContainer}>
           <Ionicons name="search" size={20} color="#aaa" />
-          <TextInput placeholder="Tìm kiếm" style={styles.searchInput} />
+          <TextInput placeholder="Tìm kiếm" style={styles.searchInput} value={searchText} onChangeText={setSearchText} />
         </View>
 
         {}
@@ -101,7 +124,7 @@ import { StackAnimationTypes } from 'react-native-screens';
           )}
         />
 
-        <BottomNavigation/>
+        
 
       </View>
     );
