@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as LocalAuthentication from 'expo-local-authentication';
 import { usePathname, useRouter } from 'expo-router';
@@ -8,7 +9,6 @@ import Toast from 'react-native-toast-message';
 import InputField from '../components/InputField';
 import { signIn } from '../lib/auth';
 import { auth } from '../lib/firebaseConfig';
-import { Ionicons } from '@expo/vector-icons';
 
 export default function SignInScreen() {
   const router = useRouter();
@@ -65,6 +65,11 @@ export default function SignInScreen() {
       try {
         const userCredential = await signIn(email, pass || password);
         const user = userCredential;
+
+        // Lấy token để check custom claims
+        const tokenResult = await user.getIdTokenResult(true); // refresh token
+        const isAdmin = tokenResult.claims.admin === true;
+
         await AsyncStorage.setItem('isLoggedIn', 'true');
         await AsyncStorage.setItem('userId', user.uid);
         await AsyncStorage.setItem('savedEmail', email);
@@ -148,8 +153,7 @@ export default function SignInScreen() {
         try {
           const hasHardware = await LocalAuthentication.hasHardwareAsync();
           const isEnrolled = await LocalAuthentication.isEnrolledAsync();
-          if (!hasHardware || !isEnrolled) return;
-  
+          if (!hasHardware || !isEnrolled) return; 
           // Ss
           const savedEmail = await AsyncStorage.getItem('savedEmail');
           if (!savedEmail || savedEmail !== email) {
@@ -191,7 +195,6 @@ export default function SignInScreen() {
         {biometricEnabled && biometricType === 'face' && (
           <TouchableOpacity onPress={handleBiometricLogin}>
             <Ionicons name="scan-outline" size={28} /> 
-            {/* Bạn có thể đổi sang icon Face ID đẹp hơn */}
           </TouchableOpacity>
         )}
         

@@ -1,4 +1,3 @@
-import { getImageFromName } from '@/utils/helpers';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
@@ -7,7 +6,6 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import React, { useCallback, useState } from 'react';
 import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Toast from 'react-native-toast-message';
-import BottomNavigation from '../components/BottomNavigation';
 import { db } from '../lib/firebaseConfig';
 
 export default function CartScreen() {
@@ -132,7 +130,7 @@ export default function CartScreen() {
   const renderItem = ({ item }: any) => (
     <View style={styles.item}>
         <TouchableOpacity onPress={() => router.push({ pathname: '/product-info', params: { productId: item.id } })}>
-            <Image    source={getImageFromName(item.image)} style={styles.image}  />
+          <Image source={{ uri: item.image}} style={styles.image} />
         </TouchableOpacity>
       <View style={styles.info}>
         <View style={styles.Row1}>

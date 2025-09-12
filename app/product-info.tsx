@@ -1,13 +1,11 @@
-import { getImageFromName } from '@/utils/helpers';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
+import { arrayRemove, arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import BottomNavigation from '../components/BottomNavigation';
-import { db } from '../lib/firebaseConfig';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
+import { db } from '../lib/firebaseConfig';
 
 export default function ProductInfoScreen() {
   const {productId} = useLocalSearchParams();
@@ -136,7 +134,7 @@ export default function ProductInfoScreen() {
           <Text>      </Text>
       </View>
       <View style={styles.body}>
-        <Image source={getImageFromName(product.image)} style={styles.image} />
+      <Image source={{ uri: product.image}} style={styles.image} />
         
         <Text style={styles.name}>{product.name}</Text>
         <Text style={styles.price}>${(product.price * quantity).toFixed(2)}</Text>

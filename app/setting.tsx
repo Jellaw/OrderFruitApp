@@ -1,11 +1,10 @@
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
-import { Alert, FlatList, Switch, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import BottomNavigation from '../components/BottomNavigation';
-import Toast from 'react-native-toast-message';
 import { signOut } from 'firebase/auth';
+import React, { useEffect, useState } from 'react';
+import { Alert, FlatList, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { auth } from '../lib/firebaseConfig';
 
 export default function SettingsScreen() {
@@ -87,12 +86,6 @@ export default function SettingsScreen() {
         title: 'Đăng xuất',
         icon: <Ionicons name="log-out-outline" size={20} color="#8B8B8B"/>,
         onPress: handleLogout,
-    },
-    {
-      id: '6',
-      title: '',
-      icon: <Ionicons name="log-out" size={20} color="#8B8B8B"/>,
-      onPress: () => router.replace('/test'),
     },
     ];
 

@@ -1,12 +1,10 @@
-import { getImageFromName } from '@/utils/helpers';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { collection, getDocs } from 'firebase/firestore';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Dimensions, FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import BottomNavigation from '../components/BottomNavigation';
 import { db } from '../lib/firebaseConfig';
-import { useFocusEffect } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 const cardWidth = (width - 60) / 2; // 2 cột, 20px padding mỗi bên và 20px giữa
@@ -114,7 +112,7 @@ export default function SeeMoreScreen() {
               { opacity: pressed ? 0.4 : 1 },
             ]}
           >
-            <Image source={getImageFromName(item.image)} style={styles.image} />
+            <Image source={{ uri: item.image}} style={styles.image} resizeMode='cover'/>
             <Text style={styles.name}>{item.name}</Text>
             <Text style={styles.price}>{item.price}</Text>
           </Pressable>
@@ -172,15 +170,21 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: '#fff',
-    padding: 12,
     borderRadius: 12,
     alignItems: 'center',
     width: cardWidth,
+    elevation: 3,
+    shadowColor: '#fefefe',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 1 },
+    shadowRadius: 4,
+    overflow: 'hidden', // quan trọng để ảnh bo tròn theo card
+    paddingBottom: 10,
   },
   image: {
-    width: 80,
-    height: 70,
-    marginBottom: 10,
+    width: '100%',
+    aspectRatio: 1.2, // tùy chỉnh tỷ lệ (1 = vuông, >1 = ngang, <1 = dọc)
+    marginBottom: 7
   },
   name: {
     fontWeight: '600',

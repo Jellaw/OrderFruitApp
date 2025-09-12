@@ -1,4 +1,4 @@
-import { getCategoryFromName, getImageFromName } from '@/utils/helpers';
+import { getCategoryFromName } from '@/utils/helpers';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
@@ -114,7 +114,11 @@ import { auth, db } from '../lib/firebaseConfig';
                     ]}               
                   >
                     
-                    <Image source={getImageFromName(product.image)} style={styles.productImage} />
+                    <Image 
+                      source={{ uri: product.image }}
+                      style={styles.productImage}
+                      resizeMode="cover"
+                    />
                     <Text style={styles.productName}>{product.name}</Text>
                     <Text style={styles.productPrice}>{product.price}</Text>
                   </Pressable>
@@ -188,25 +192,27 @@ import { auth, db } from '../lib/firebaseConfig';
     },
     card: {
       backgroundColor: '#fefefe',
-      padding: 7,
+      //padding: 7,
       borderRadius: 14,
       marginRight: 17,
       alignItems: 'center',
-      width: 167,
+      width: 155,
       elevation: 3,
       shadowColor: '#fefefe',
       shadowOpacity: 0.1,
       shadowOffset: { width: 0, height: 1 },
       shadowRadius: 4,
+      overflow: 'hidden', // quan trọng để ảnh bo tròn theo card
+      paddingBottom: 10,
     },
     productImage: {
-      width: 80,
-      height: 70,
-      marginBottom: 10,
+      width: '100%',
+      aspectRatio: 1.2,  // tùy chỉnh tỷ lệ (1 = vuông, >1 = ngang, <1 = dọc)
+      marginBottom: 7
     },
     productName: {
       fontWeight: '600',
-      fontSize: 14,
+      fontSize: 15,
     },
     productPrice: {
       color: '#888',

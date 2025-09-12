@@ -4,12 +4,10 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useRouter } from "expo-router";
 import { addDoc, collection, doc, getDoc, getDocs, serverTimestamp, updateDoc } from "firebase/firestore";
 import { useCallback, useEffect, useState } from "react";
-import { AnimatableNumericValue, FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Toast from "react-native-toast-message";
 import TabSwitch from '../components/TabSwitch';
 import { db } from "../lib/firebaseConfig";
-import { getImageFromName } from "@/utils/helpers";
-import symbolicateStackTrace from "react-native/Libraries/Core/Devtools/symbolicateStackTrace";
 
 type CartItem = {
   id: string;
@@ -19,7 +17,7 @@ type CartItem = {
 };
 type notify ={
   id: string;
-
+  
 }
 
 export default function AddAddressScreen(){
@@ -347,7 +345,7 @@ export default function AddAddressScreen(){
 
   const renderItem = ({ item }: any) => (
     <View style={styles.item}>
-            <Image    source={getImageFromName(item.image)} style={styles.image}  />
+        <Image source={{ uri: item.image}} style={styles.image} />
       <View style={styles.infoCart}>
         <View style={styles.Row1}>
                 <Text style={styles.name}>{item.name}</Text>
