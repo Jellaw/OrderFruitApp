@@ -76,7 +76,7 @@ import { auth, db } from '../lib/firebaseConfig';
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.headerLeft}>
-          <Image source={require('../assets/images/logo_app.png')} style={styles.logoApp} />
+            <Image source={require('../assets/images/logo_app.png')} style={styles.logoApp} />
             <Text style={styles.logoText}>MaLuyFood</Text>
           </View>
           <Ionicons name="person-circle-outline" size={30} color="#999" />

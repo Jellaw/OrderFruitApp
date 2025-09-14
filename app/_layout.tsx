@@ -7,6 +7,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { Alert, BackHandler } from 'react-native';
 import { StackAnimationTypes } from 'react-native-screens';
+import Toast from 'react-native-toast-message'; 
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -71,6 +72,7 @@ export default function RootLayout() {
     </Stack>
     {tabRoutes.includes(pathname.replace('/', '')) && <BottomNavigation />}
       <StatusBar style="auto" />
+      <Toast />
     </ThemeProvider>
   );
 }
