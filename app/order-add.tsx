@@ -15,7 +15,7 @@ type CartItem = {
   price: number;
   quantity: number;
 };
-type notify ={
+type note ={
   id: string;
   
 }
@@ -25,7 +25,7 @@ export default function AddAddressScreen(){
     const [fullName, setFullName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [address, setAddress] = useState('');
-    const [notify, setNotify] = useState('');
+    const [note, setNote] = useState('');
     const [activeTab, setActiveTab] = useState(0);
     const [cards, setCards] = useState<any[]>([]);
     const [selectedPayment, setSelectedPayment] = useState<{ type: string; cardId?: string } | null>(null);
@@ -63,12 +63,12 @@ export default function AddAddressScreen(){
         const tempFullName = await AsyncStorage.getItem("temp_fullName");
         const tempPhone = await AsyncStorage.getItem("temp_phoneNumber");
         const tempAddress = await AsyncStorage.getItem("temp_address");
-        const tempNotify = await AsyncStorage.getItem("temp_notify");
+        const tempNote = await AsyncStorage.getItem("temp_note");
 
         if (tempFullName) setFullName(tempFullName);
         if (tempPhone) setPhoneNumber(tempPhone);
         if (tempAddress) setAddress(tempAddress);
-        if (tempNotify) setNotify(tempNotify);
+        if (tempNote) setNote(tempNote);
       };
       loadTempData();
     }, []);
@@ -128,6 +128,13 @@ export default function AddAddressScreen(){
               position: 'top',
             });
             return;
+          }else if(selectedPayment.type === "card" && !selectedPayment.cardId){
+            Toast.show({
+              type: 'error',
+              text1: 'Vui lòng chọn thẻ',
+              position: 'top',
+            })
+            return;
           }
         }
       }
@@ -142,7 +149,7 @@ export default function AddAddressScreen(){
       await AsyncStorage.setItem("temp_fullName", fullName);
       await AsyncStorage.setItem("temp_phoneNumber", phoneNumber);
       await AsyncStorage.setItem("temp_address", address);
-      await AsyncStorage.setItem("temp_notify", notify);
+      await AsyncStorage.setItem("temp_note", note);
 
       if (!fullName || !phoneNumber || !address) {
         Toast.show({
@@ -189,7 +196,6 @@ export default function AddAddressScreen(){
         })
         return;
       }
-      console.log("Phương thức thanh toán đã chọn:", selectedPayment);
       // Lưu dữ liệu tạm phương thức thanh toán
       await AsyncStorage.setItem("temp_payment", JSON.stringify(selectedPayment));
       setActiveTab(2);
@@ -226,18 +232,31 @@ export default function AddAddressScreen(){
           fullName,
           phoneNumber,
           address,
-          notify,
+          note,
           paymentMethod: paymentData,
           items: cartItems,
           createdAt: serverTimestamp(),
+          status:"pending",
+          totalPrice: totalPrice
         };
     
-        await addDoc(collection(db, 'orders'), orderData);
+        // 👉 Tạo order
+        const orderRef = await addDoc(collection(db, 'orders'), orderData);
+
+        // 👉 Thêm notify vào subcollection user
+        await addDoc(collection(db, "users", userId, "notify"), {
+          title: "Tạo đơn hàng thành công",
+          body: `Đơn hàng ${orderRef.id.slice(-4)} đã được tạo.`,
+          orderId: orderRef.id,
+          read: false,
+          createdAt: serverTimestamp(),
+        });
 
         // Xóa toàn bộ cart
         await updateDoc(doc(db, 'users', userId), {
           cart: []
         });
+        
         Toast.show({
           type: 'success',
           text1: 'Đặt hàng thành công',
@@ -249,11 +268,11 @@ export default function AddAddressScreen(){
           "temp_fullName",
           "temp_phoneNumber",
           "temp_address",
-          "temp_notify"
+          "temp_note"
         ]);
 
         setCartItems([]);
-        router.replace('/');
+        router.replace('/home');
       } catch (error) {
         console.log(error);
         Toast.show({
@@ -387,7 +406,7 @@ export default function AddAddressScreen(){
               <TextInput style={styles.input} placeholder="Họ tên" value={fullName} onChangeText={setFullName} />
               <TextInput style={styles.input} placeholder="Số điện thoại" value={phoneNumber} onChangeText={setPhoneNumber} />
               <TextInput style={styles.input} placeholder="Địa chỉ" value={address} onChangeText={setAddress} />
-              <TextInput style={styles.input} placeholder="Ghi chú" value={notify} onChangeText={setNotify} />
+              <TextInput style={styles.input} placeholder="Ghi chú" value={note} onChangeText={setNote} />
             </>
               )}
 
@@ -483,7 +502,7 @@ export default function AddAddressScreen(){
                     </View>
                     <View style={styles.infoConfirm}>
                       <Text style={styles.infoConfirm1}>Ghi chú</Text>
-                      <Text style={styles.infoConfirm2}>{notify}</Text>
+                      <Text style={styles.infoConfirm2}>{note}</Text>
                     </View>
                     <View style={styles.infoConfirm}>
                       <Text style={styles.infoConfirm1}>Phương thức</Text>
@@ -495,17 +514,21 @@ export default function AddAddressScreen(){
                             : "Chưa chọn"}
                       </Text>
                     </View>
+                    <View style={styles.infoConfirm}>
+                      <Text style={styles.totalPrice1}>Tổng tiền:</Text>
+                      <Text style={styles.totalPrice2}>{totalPrice.toLocaleString('vi-VN')} ₫</Text>
+                    </View>
                   </View>
-                
-              
-                  <TouchableOpacity style={styles.button} onPress={handleNext}>
-                      <Text style={styles.buttonText}>
-                          {activeTab < titles.length - 1 ? "Tiếp theo" : "Hoàn tất"}
-                      </Text>
-                  </TouchableOpacity>
+  
                   </View>
               )}
+            
             </View>
+              <TouchableOpacity style={styles.button} onPress={handleNext}>
+                  <Text style={styles.buttonText}>
+                      {activeTab < titles.length - 1 ? "Tiếp theo" : "Hoàn tất"}
+                  </Text>
+              </TouchableOpacity>
         </View>
     )
   }
@@ -537,8 +560,8 @@ const styles = StyleSheet.create({
         borderRadius:30,
         fontSize:16,
         marginBottom: 17,
-        paddingHorizontal:30,
-        width:'85%',
+        paddingHorizontal:35,
+        width:'90%',
         alignSelf: 'center',
     },
     button:{
@@ -548,11 +571,12 @@ const styles = StyleSheet.create({
         alignItems:'center',
         width:'85%',
         alignSelf: 'center',
-        marginBottom:30,
+        marginBottom:35,
 
     },
     buttonText:{
         fontWeight:'bold',
+        fontSize: 17,
     },
     cardItem: { padding: 20, borderRadius: 12, borderWidth: 1, borderColor: '#ccc', marginBottom: 10, backgroundColor: '#fff' },
     cardSelected: { borderColor: '#FDB813', backgroundColor: '#FFF8E5' },
@@ -643,5 +667,11 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: '#ddd',
     paddingVertical: 8,
+  },
+  totalPrice1:{
+
+  },
+  totalPrice2:{
+
   }
 })

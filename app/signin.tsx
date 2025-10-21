@@ -78,7 +78,7 @@ export default function SignInScreen() {
         Toast.show({
           type: 'success',
           text1: 'Đăng nhập thành công',
-          position: 'bottom',
+          position: 'top',
           visibilityTime: 3000, // (ms)
         });
         router.replace('/intro');
